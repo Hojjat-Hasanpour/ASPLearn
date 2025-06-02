@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html class="no-js" dir="rtl" lang="fa-IR">
+<head>
+  <meta charset="UTF-8">
+  <title> تاپ لرن | @ViewData["Title"] </title>
+  @RenderSection("MetaTag",false)
+  <partial name="_MetaTags" />
+  <partial name="_Styles" />
+  @* <script src="/js/jquery.min.js"></script> *@
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+</head>
+<body>
+  <script src="/js/modernizr-custom.js"></script>
+
+  <div class="landing-layer">
+    <div class="container">
+      <nav>
+        <div class="row">
+          <div class="col-sm-6 col-xs-12">
+            <ul>
+              <li>
+                <a href="/"> صفحه اصلی </a>
+                <a href=""> همکاری در فروش </a>
+                <a href=""> درباره ما </a>
+                <a href=""> تماس با ما </a>
+                <a href="/Forum"> انجمن </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+            <div class="clientarea">
+							@if (User.Identity!.IsAuthenticated)
+							{
+								<div class="loggein">
+                  @*class hidden add to logging*@
+                  <i class="zmdi zmdi-account"></i><a href="/UserPanel"> @User.Identity.Name ، خوش آمدید </a> /
+                  <a href="/Logout">خروج</a>
+								</div>
+							}
+							else
+							{
+								<div class="signin">
+									<i class="zmdi zmdi-account"></i>
+									<a href="/Login"> ورود </a> /
+									<a href="/Register"> عضویت </a>
+								</div>
+							}
+            </div>
+          </div>
+        </div>
+      </nav>
+      @RenderSection("SearchBox", false)
+    </div>
+  </div>
+
+  <!-- main manu -->
+  @* <partial name="_MainMenu" /> *@
+	@await Component.InvokeAsync("CourseGroupComponent")
+  <!-- /main manu -->
+  <!-- content -->
+  @RenderBody()
+  <!-- /content -->
+  <!-- footer -->
+  <partial name="_Footer" />
+  <!-- /footer -->
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/jquery.validate.min.js"></script>
+  <script src="/js/jquery.validate.unobtrusive.min.js"></script>
+  @* <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script> *@
+	<script src="/js/jquery-ui.min.js"></script>
+  @RenderSection("Scripts",required: false)
+</body>
+</html>

@@ -1,0 +1,82 @@
+﻿@using ASPLearn.Core.Convertors
+@using ASPLearn.Core.Services.Interfaces
+@using ASPLearn.DataLayer.Entities.Course
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<ASPLearn.DataLayer.Entities.Question.Question>
+@inject ICourseService CourseService;
+@inject IOrderService OrderService;
+@{
+  ViewData["Title"] = "انجمن";
+  Course? course = null;
+  if (ViewBag.CourseId != null)
+    course = CourseService.GetCourseById((int)ViewBag.CourseId);
+}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="inner" style="padding: 8px;">
+        <div class="panel">
+          @if (ViewBag.CourseId != null)
+          {
+            if (User.Identity!.IsAuthenticated)
+            {
+              if (course!.CoursePrice == 0 || OrderService.IsUserInCourse(User.Identity.Name!, course.CourseId))
+              {
+                <a asp-action="CreateQuestion" asp-route-id="@ViewBag.CourseId" class="btn btn-success">پرسیدن سوال</a>
+              }
+              else
+              {
+                <div class="alert alert-danger">
+                  جهت درج پاسخ باید این دوره را خریده باشید.
+                </div>
+              }
+            }
+            else
+            {
+              <div class="alert alert-warning">
+                برای پرسیدن سوال وارد حساب کاربری خود شوید.
+              </div>
+            }
+          }
+          <form class="form-inline" asp-action="Index" method="get">
+            <input type="text" class="form-control" name="filter" placeholder="عبارت مورد نظر را وارد کنید" />
+            <input type="hidden" name="courseId" value="@ViewBag.CourseId" />
+            <button class="btn btn-success" type="submit">جستجو</button>
+          </form>
+        </div>
+        @if (Model.Any())
+        {
+          @foreach (var item in Model)
+          {
+            <div class="panel">
+              <div class="panel-heading">
+                <h1>
+                  <a href="/Forum/ShowQuestion/@item.QuestionId">
+                    @item.Title
+                  </a>
+                </h1>
+                <div class="text-muted" style="margin: 10px;">
+                  <a href="/ShowCourse/@item.Course.CourseId">@item.Course.CourseTitle</a> |
+                  <span class="label label-warning">
+                    @item.CreateDate.ToShamsi()
+                  </span> |
+                  <span class="label label-default">
+                    @item.User.UserName
+                  </span>
+                </div>
+              </div>
+            </div>
+          }
+        }
+        else
+        {
+          <div class="alert alert-warning">هنوز سوالی پرسیده نشده است. اولین سوال را شما بپرسید :)</div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+

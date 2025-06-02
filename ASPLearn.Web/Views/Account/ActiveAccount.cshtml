@@ -1,0 +1,25 @@
+﻿@{
+	ViewBag.Title = "فعالسازی";
+}
+
+<nav aria-label="breadcrumb">
+  <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+    <li class="breadcrumb-item active" aria-current="page">فعالسازی حساب کاربری</li>
+  </ul>
+</nav>
+
+<div class="container">
+	@if (ViewBag.IsActive == true)
+	{
+		<div class="alert alert-success">
+			حساب کاربری شما با موفقیت فعال شد. برای ورود به سایت <a href="/Login">اینجا</a> کلیک کنید.
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-danger">
+			فعالسازی حساب کاربری شما با خطا مواجه شد.
+		</div>
+	}
+</div>

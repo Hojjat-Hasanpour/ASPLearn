@@ -1,0 +1,48 @@
+﻿@model ASPLearn.Core.DTOs.ConfirmWalletViewModel
+@{
+	ViewData["Title"] = "تایید واریز";
+}
+
+<div class="container">
+	<nav aria-label="breadcrumb">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+			<li class="breadcrumb-item active" aria-current="page"> تایید واریز </li>
+		</ul>
+	</nav>
+</div>
+
+<main>
+	<div class="container">
+		<div class="user-account">
+			<div class="row">
+				<partial name="_SideBar" />
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<section class="user-account-content">
+						<header><h1> کیف پول شما </h1></header>
+						<div class="inner form-layer">
+							<form asp-action="OnlinePayment" method="post">
+								<input type="hidden" asp-for="@Model.WalletId" value="@Model.WalletId" />
+								<div class="row">
+									<div class="col-md-7 col-sm-8 col-xs-12">
+										<div class="input-group">
+											<span class="input-group-addon" id="email-address"><i class="zmdi zmdi-balance-wallet"></i></span>
+											<input type="number" class="form-control" asp-for="Amount" placeholder="مبلغ به تومان" value="@Model.Amount" aria-describedby="confirmnewpassword" disabled>
+										</div>
+									</div>
+
+									<div class="text-danger" asp-validation-summary="All"></div>
+									<div class="col-md-7 col-sm-8 col-xs-12">
+										<button class="btn btn-success" type="submit"> تایید شارژ </button>
+										<a asp-action="Index" class="btn btn-warning"> انصراف </a>
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

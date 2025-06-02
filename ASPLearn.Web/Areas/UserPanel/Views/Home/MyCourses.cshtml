@@ -1,0 +1,62 @@
+﻿@model List<ASPLearn.DataLayer.Entities.Course.Course>
+@using ASPLearn.Core.Convertors
+@{
+	ViewData["Title"] = "دوره های من";
+}
+
+<div class="container">
+	<nav aria-label="breadcrumb">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+			<li class="breadcrumb-item active" aria-current="page"> دوره های من </li>
+		</ul>
+	</nav>
+</div>
+
+<main>
+	<div class="container">
+		<div class="user-account">
+			<div class="row">
+				<partial name="_SideBar" />
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<section class="user-account-content">
+						<header><h1> دوره های من </h1></header>
+						@if (Model.Count <= 0)
+						{
+							<div class="alert alert-warning">
+								شما دوره ای ندارید!
+							</div>
+						}
+						else
+						{
+							<table class="table table-bordered">
+
+								<thead>
+									<tr>
+										<th>دوره</th>
+										<th>تاریخ شروع دوره</th>
+										<th>تاریخ بروزرسانی دوره</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var course in Model)
+									{
+										<tr>
+											<td>
+												<a href="/ShowCourse/@course.CourseId" target="_blank">@course.CourseTitle</a>
+											</td>
+											<td>
+												@course.CreateDate.ToShamsi()
+											</td>
+											<td>@course.UpdateDate</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

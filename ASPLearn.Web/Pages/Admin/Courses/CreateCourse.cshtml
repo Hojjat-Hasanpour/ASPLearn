@@ -1,0 +1,152 @@
+﻿@page
+@model ASPLearn.Web.Pages.Admin.Courses.CreateCourseModel
+@{
+	ViewData["Title"] = "افزودن دوره جدید";
+}
+@section Links {
+	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/45.0.0/ckeditor5.css" />
+}
+<div class="row">
+	<form method="post" enctype="multipart/form-data">
+		<div class="col-md-8">
+			<h2>اطلاعات دوره</h2>
+			<hr />
+			<div class="form-group">
+				<label>عنوان دوره</label>
+				<input type="text" asp-for="Course.CourseTitle" class="form-control">
+				<span class="text-danger" asp-validation-for="Course.CourseTitle"></span>
+			</div>
+			<div class="form-group">
+				<label>گروه اصلی</label>
+				<select class="form-control" asp-for="Course.GroupId" asp-items="@(ViewData["Groups"] as SelectList)"></select>
+				<span class="text-danger" asp-validation-for="Course.GroupId"></span>
+			</div>
+			<div class="form-group">
+				<label>گروه فرعی</label>
+				<select class="form-control" asp-for="Course.SubGroup" asp-items="@(ViewData["SubGroups"] as SelectList)"></select>
+				<span class="text-danger" asp-validation-for="Course.SubGroup"></span>
+			</div>
+			<div class="form-group">
+				<label>مدرس دوره</label>
+				<select class="form-control" asp-for="Course.TeacherId" asp-items="@(ViewData["Teachers"] as SelectList)"></select>
+				<span class="text-danger" asp-validation-for="Course.TeacherId"></span>
+			</div>
+			<div class="form-group">
+				<label>توضیحات دوره</label>
+				<textarea class="form-control" asp-for="Course.CourseDescription" rows="10"></textarea>
+				<span class="text-danger" asp-validation-for="Course.CourseDescription"></span>
+			</div>
+			<div class="form-group">
+				<label>قیمت دوره</label>
+				<input type="number" asp-for="Course.CoursePrice" value="0" class="form-control" />
+				<span class="text-danger" asp-validation-for="Course.CoursePrice"></span>
+			</div>
+			<div class="form-group">
+				<label>فایل دمو دوره</label>
+				<input type="file" name="demoUp">
+				<span class="text-danger" asp-validation-for="Course.DemoFileName"></span>
+			</div>
+			<div class="form-group">
+				<label>کلمات کلیدی دوره</label>
+				<input type="text" asp-for="Course.Tags" class="form-control">
+				<p class="help-block">کلمات را با - جدا کنید</p>
+				<span class="text-danger" asp-validation-for="Course.Tags"></span>
+			</div>
+			<input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+		</div>
+		<div class="col-md-4">
+			<p></p>
+			<img id="imgCourse" class="thumbnail" src="/course/image/No_Image.jpg" />
+			<div class="form-group">
+
+				<label>انتخاب تصویر</label>
+				<input type="file" name="imgCourseUp" id="imgCourseUp">
+			</div>
+			<div class="form-group">
+				<label>سطح دوره</label>
+				<select class="form-control" asp-for="Course.LevelId" asp-items="@(ViewData["Levels"] as SelectList)"></select>
+				<span class="text-danger" asp-validation-for="Course.LevelId"></span>
+			</div>
+			<div class="form-group">
+				<label>وضعیت دوره</label>
+				<select class="form-control" asp-for="Course.StatusId" asp-items="@(ViewData["Statuses"] as SelectList)"></select>
+				<span class="text-danger" asp-validation-for="Course.StatusId"></span>
+			</div>
+		</div>
+	</form>
+</div>
+
+@section Scripts
+{
+	<script>
+		$("#Course_GroupId").change(function() {
+				$("#Course_SubGroup").empty();
+				$.getJSON("/home/GetSubGroups/"+ $("#Course_GroupId :selected").val(),
+						function(data) {
+
+								$.each(data,
+										function() {
+												$("#Course_SubGroup").append('<option value=' + this.value + '>' + this.text + '</option>');
+
+										});
+
+						});
+
+
+		});
+
+		function readURL(input) {
+
+				if (input.files && input.files[0]) {
+						var reader = new FileReader();
+
+						reader.onload = function (e) {
+								$('#imgCourse').attr('src', e.target.result);
+						}
+
+						reader.readAsDataURL(input.files[0]);
+				}
+		}
+
+		$("#imgCourseUp").change(function () {
+				readURL(this);
+		});
+	</script>
+
+	@* <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script> *@
+	@* <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script> *@
+	@* <script src="https://cdn.ckeditor.com/4.25.1-lts/standard/ckeditor.js"></script> *@
+	<script src="https://cdn.ckeditor.com/ckeditor5/45.0.0/ckeditor5.umd.js"></script>
+	 <script>
+	 	const {
+	 		ClassicEditor,
+	 		Essentials,
+	 		Bold,
+	 		Italic,
+	 		Font,
+	 		Paragraph
+	 	} = CKEDITOR;
+
+	 	ClassicEditor
+	 		.create( document.querySelector( '#Course_CourseDescriptionUnused' ), {
+	 			licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NDU3OTgzOTksImp0aSI6IjdhODdlMTY3LTBjMTEtNDAyNS1hNTk4LWQ2NzMwMjFkYjQ4MCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImE0M2Y3YmNhIn0.hlj_EOXX0np00MNi5CJ4MnbzjLYnceVGFvVOCly0IHXxHMBAqYfTmMTSOexXDA9QHQR7_ZkNXhZOZPjiXukchA', // Create a free account on https://portal.ckeditor.com/checkout?plan=free
+	 			plugins: [ Essentials, Bold, Italic, Font, Paragraph ],
+	 			toolbar: [
+	 				'undo', 'redo', '|', 'bold', 'italic', '|',
+	 				'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+	 			]
+	 		} )
+	 			.then( editor => {
+	 				window.editor = editor;
+	 			} )
+	 			.catch( error => {
+	 				console.error( error );
+	 			} );
+	</script>
+	@* <script type="text/javascript"> *@
+
+	@* 	CKEDITOR.replace( 'Course_CourseDescription' ); *@
+
+	@* </script> *@
+}
+

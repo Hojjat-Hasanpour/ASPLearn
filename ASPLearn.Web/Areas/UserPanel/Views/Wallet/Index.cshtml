@@ -1,0 +1,98 @@
+﻿@using ASPLearn.Core.Convertors
+@using ASPLearn.Core.DTOs
+@model ASPLearn.Core.DTOs.ChargeWalletViewModel
+@{
+	ViewData["Title"] = "کیف پول شما";
+	// Layout = "~/Areas/UserPanel/Views/Shared/_UserPanelLayout.cshtml";
+}
+
+<div class="container">
+	<nav aria-label="breadcrumb">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+			<li class="breadcrumb-item active" aria-current="page"> کیف پول شما </li>
+		</ul>
+	</nav>
+</div>
+
+<main>
+	<div class="container">
+		<div class="user-account">
+			<div class="row">
+				<partial name="_SideBar" />
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<section class="user-account-content">
+						<header><h1> کیف پول شما </h1></header>
+						<div class="inner form-layer">
+							<form asp-action="Index" method="post">
+
+
+								<div class="row">
+
+									<div class="col-md-7 col-sm-8 col-xs-12">
+										<div class="input-group">
+											<span class="input-group-addon" id="email-address"><i class="zmdi zmdi-balance-wallet"></i></span>
+											<input type="number" class="form-control" asp-for="Amount" placeholder="مبلغ به تومان" aria-describedby="confirmnewpassword">
+										</div>
+									</div>
+
+									<div class="text-danger" asp-validation-summary="All"></div>
+									<div class="col-md-7 col-sm-8 col-xs-12">
+										<button class="btn btn-success"> شارژ کیف پول </button>
+									</div>
+								</div>
+
+							</form>
+							<hr />
+							<h2 style="padding-bottom:20px">تراکنش های شما:</h2>
+							@{
+								List<WalletViewModel>? transactions = ViewBag.ListWallet as List<WalletViewModel>;
+							}
+							<table class="table table-bordered">
+								@if (transactions != null && transactions.Count > 0)
+								{
+
+									<tr>
+										<th>مبلغ</th>
+										<th>تاریخ</th>
+										<th>نوع تراکنش</th>
+										<th>شرح</th>
+									</tr>
+									@foreach (var item in transactions)
+									{
+										<tr>
+											<td>@item.Amount.ToString("#,0 تومان")</td>
+											<td>@item.Date.ToShamsi()</td>
+											<td>
+												@if (item.Type == 1)
+												{
+													<span class="text-success">واریز</span>
+												}
+												else
+												{
+													<span class="text-danger">برداشت</span>
+												}
+											</td>
+											<td>
+												@{
+													string tagHref = $"""<a href="/UserPanel/MyOrders/ShowOrder/{item.Description!.Replace("فاکتور شماره #", "")}">#</a>""";
+												}
+												@Html.Raw(item.Description!.Replace("#",tagHref))
+												</td>
+										</tr>
+									}
+								}
+								else
+								{
+									<tr>
+										<td colspan="4">تراکنشی برای نمایش وجود ندارد.</td>
+									</tr>
+								}
+							</table>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

@@ -1,0 +1,118 @@
+﻿@page "{id}"
+@using ASPLearn.DataLayer.Entities.User
+@model ASPLearn.Web.Pages.Admin.Users.EditUserModel
+@{
+}
+@{
+	ViewData["Title"] = "افزودن کاربر";
+	List<Role> roles = ViewData["Roles"] as List<Role>;
+}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">ویرایش کاربر</h1>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+	<form method="post" enctype="multipart/form-data">
+		<input type="hidden" asp-for="@Model.UpdateViewModel.UserId"/>
+		<input type="hidden" asp-for="@Model.UpdateViewModel.UserName" />
+		<input type="hidden" asp-for="@Model.UpdateViewModel.AvatarName" />
+		<div class="row">
+			<div class="col-md-8">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						اطلاعات کاربر
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="form-group">
+							<label>نام کاربری:</label>
+							<label class="text-success">@Model.UpdateViewModel.UserName</label>
+							<p class="help-block">در این کادر نام کاربری را وارد نمایید.</p>
+						</div>
+						<span class="text-danger" asp-validation-for="UpdateViewModel.UserName"></span>
+						<div class="form-group">
+							<label>ایمیل</label>
+							<input type="email" asp-for="UpdateViewModel.Email" class="form-control">
+							<p class="help-block">در این کادر ایمیل را وارد نمایید.</p>
+						</div>
+						<span class="text-danger" asp-validation-for="UpdateViewModel.Email"></span>
+						<div class="form-group">
+							<label>کلمه عبور</label>
+							<input type="text" asp-for="UpdateViewModel.Password" class="form-control">
+							<p class="help-block">در این کادر رمز عبور را وارد نمایید.</p>
+						</div>
+						<span class="text-danger" asp-validation-for="UpdateViewModel.Password"></span>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						ذخیره اطلاعات
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<input type="submit" value="ویرایش اطلاعات" class="btn btn-success" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						تصویر پروفایل
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<img id="imgAvatar" class="thumbnail" src="/UserAvatar/@Model.UpdateViewModel.AvatarName" />
+						<div class="form-group">
+							<label>انتخاب تصویر</label>
+							<input type="file" asp-for="UpdateViewModel.UserAvatar">
+						</div>
+					</div>
+
+					<!-- /.panel-body -->
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						نقش های کاربر
+					</div>
+					<!-- /.panel-heading -->
+					<div class="panel-body">
+						<div class="form-group">
+							<label>انتخاب نقش ها</label>
+							@if (roles != null)
+								@foreach (var item in roles)
+								{
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="SelectedRoles" value="@item.RoleId" @(Model.UpdateViewModel.UserRoles!.Any(r=>r==item.RoleId) ? "checked":"")>@item.RoleTitle
+										</label>
+									</div>
+								}
+
+						</div>
+					</div>
+					<!-- /.panel-body -->
+				</div>
+			</div>
+		</div>
+		<div class="row">
+		</div>
+
+	</form>
+</div>
+
+@section Scripts {
+	<script>
+			UpdateViewModel_UserAvatar.onchange = evt => {
+			const [file] = UpdateViewModel_UserAvatar.files
+			if (file) {
+				imgAvatar.src = URL.createObjectURL(file)
+			}
+		}
+	</script>
+}

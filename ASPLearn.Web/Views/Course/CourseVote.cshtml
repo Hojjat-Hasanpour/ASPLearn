@@ -1,0 +1,13 @@
+﻿@model (int LikeVotes, int DislikeVotes)
+
+@if (User.Identity!.IsAuthenticated && ViewBag.AccessDenied == null)
+{
+	<div>
+		<img src="https://toplearn.com/img/votew.jpg" alt="Something went wrong!" />
+		<hr />
+		<div>
+			<button class="btn btn-success" onclick="vote(true)">می پسندم (@Model.LikeVotes)</button>
+			<button class="btn btn-danger" onclick="vote(false)">نمی پسندم (@Model.DislikeVotes)</button>
+		</div>
+	</div>
+}
