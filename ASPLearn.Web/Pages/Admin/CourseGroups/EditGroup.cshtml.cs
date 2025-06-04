@@ -15,13 +15,13 @@ namespace ASPLearn.Web.Pages.Admin.CourseGroups
             CourseGroup = _courseService.GetGroupById(id)!;
         }
 
-        public IActionResult OnPost(CourseGroup group)
+        public IActionResult OnPost()
         {
             //ModelState.Remove("GroupName");
             if (!ModelState.IsValid)
                 return Page();
 
-            _courseService.UpdateGroup(group);
+            _courseService.UpdateGroup(CourseGroup);
 
             return RedirectToPage("Index");
         }

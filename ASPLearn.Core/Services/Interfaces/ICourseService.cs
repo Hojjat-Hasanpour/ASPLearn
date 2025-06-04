@@ -9,6 +9,8 @@ namespace ASPLearn.Core.Services.Interfaces
     {
         #region CourseGroup
         List<CourseGroup> GetAllGroups();
+        List<CourseGroup> GetDeletedGroups();
+        void RestoreDeletedGroup(int groupId);
         List<SelectListItem> GetGroupForManageCourse();
         List<SelectListItem> GetSubGroupForManageCourse(int groupId);
         List<SelectListItem> GetTeachers();

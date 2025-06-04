@@ -22,10 +22,16 @@
 				</div>
 				<!-- /.panel-heading -->
 				<div class="panel-body">
-					<div class="form-group">
-						<label>عنوان گروه</label>
-						<input type="text" asp-for="CourseGroup.GroupName" class="form-control">
-					</div>
+          <div class="form-group">
+            <label>عنوان گروه</label>
+            <input type="text" asp-for="CourseGroup.GroupName" class="form-control">
+          </div>
+          <div class="form-group">
+            <div>
+              <label>حذف شده:</label>
+							<input type="checkbox" asp-for="CourseGroup.IsDelete"/>
+            </div>
+          </div>
 					<input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
 				</div>
 				<!-- /.panel-body -->

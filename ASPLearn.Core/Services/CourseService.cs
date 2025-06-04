@@ -160,6 +160,15 @@ namespace ASPLearn.Core.Services
         }
 
         public List<CourseGroup> GetAllGroups() => _context.CourseGroups.Include(c => c.CourseGroups).ToList();
+        public List<CourseGroup> GetDeletedGroups() => _context.CourseGroups.IgnoreQueryFilters().Where(g => g.IsDelete == true).ToList();
+        public void RestoreDeletedGroup(int groupId)
+        {
+            var group = _context.CourseGroups.IgnoreQueryFilters().SingleOrDefault(g => g.IsDelete == true && g.GroupId == groupId);
+            if (group is null) throw new Exception("Group not found!");
+            group.IsDelete = false;
+            _context.CourseGroups.Update(group);
+            _context.SaveChanges();
+        }
 
         public (List<ShowCourseListItemViewModel> Model, int PageCount) GetCourse(int pageId = 1, string filter = "",
             string getType = "all", string orderByType = "date", int startPrice = 0, int endPrice = 0,
